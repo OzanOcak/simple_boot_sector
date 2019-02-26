@@ -1,0 +1,13 @@
+-------------------------------
+mkdir lecture1/examples
+touch bootsector.bin
+ls -lah lecture1/examples/bootsector.bin
+sudo brew install truncate
+truncate bootsector.bin -s 1200k
+brew install coreutils
+mkisofs -o my_os.iso -b bootsector.bin ./
+qemu-system-x86_64 bootsector.bin
+
+diskutil list
+sudo dd if=/dev/disk0s1 of=/tmp/oz_real_bootsector bs=512 count=1
+---------------------------------

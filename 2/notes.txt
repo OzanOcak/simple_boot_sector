@@ -1,0 +1,15 @@
+vim boot01.asm
+
+start:
+  jmp start
+
+nasm boot01.asm -f bin -o boot01.bin
+ihex boot01.bin  --> there will be EB FE(jmp start, labels do not take place)
+
+vim boot01.asm
+(cont.)
+db 0
+db 0
+db 2
+dw 1234
+
