@@ -11,5 +11,20 @@ vim boot01.asm
 db 0
 db 0
 db 2
-dw 1234
+dw 0x1234
+
+vim boot01.asm
+
+times 508 db 0 ; 2 bytes jmp start and 2 bytes magic number, total 521 bytes
+dw 0xaa55 
+
+ls -lah boot1.bin
+qemu-system-x86_64 boot1.bin
+i
+---the problem is if we put magic numbers in wrong place which boot.bin
+supposed to be 512 bytes, pc will not be booted
+$  -> which byte in the code segment 
+$$  -->starting byte(whereever it is)
+times 510-($-$$) db 0
+dw 0xaa55  --2 bytes
 
