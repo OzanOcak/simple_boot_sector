@@ -1,0 +1,101 @@
+[org 0x7c00]
+  
+;set up stack away from code
+
+mov bp,0x8000
+mov sp,bp
+
+mov al,'X'  ; push 'X' to al
+call print_ch  ; mov bx,ip && jmp print_ch
+
+
+mov al,'Y'
+call print_ch
+
+jmp $
+
+print_ch:
+   mov ah,0x0e
+   int 0x10
+   ret   ;pop bx && jmp bx
+
+times 510-($-$$) db 0
+dw 0xaa55
+
+-----------------------------
+
+[org 0x7c00]
+;set up stack away from code
+
+mov bp,0x8000
+mov sp,bp
+
+mov si,HELLO_MSG ; address of hello
+call print_str
+
+jmp $
+
+print_str:
+ _loop:
+   mov al,[si] ; data in the addr
+   cmp al,0
+   je _end
+   mov ah,0x0e
+   int 0x10
+   add si,1
+   jmp  _loop
+ _end:
+  ret
+
+
+
+HELLO_MSG:
+  db 'Hello',0 ; if there is no 0 will read bye
+BYE_MSG:
+  db 'Bye',0
+
+
+
+times 510-($-$$) db 0
+dw 0xaa55
+
+-----------------------------------
+
+[org 0x7c00]
+;set up stack away from code
+
+mov bp,0x8000
+mov sp,bp
+
+mov si,HELLO_MSG ; address of hello
+call print_str
+
+jmp $
+
+%include "my_func.asm"
+
+HELLO_MSG:
+  db 'Hello',0 ; if there is no 0 will read bye
+BYE_MSG:
+  db 'Bye',0
+
+
+
+times 510-($-$$) db 0
+dw 0xaa55
+
+----
+
+print_str:
+ _loop:
+   ;mov al,[si] ; data in the addr
+   lodsb
+   cmp al,0
+   je _end
+   mov ah,0x0e
+   int 0x10
+   ;inc si
+   jmp  _loop
+ _end:
+  ret
+~       
